@@ -13,27 +13,23 @@ function Modal (props) {
   const rules = [
     {
       name: 'Rule 1',
-      description: 'Create inputs and ouputs clicking on the left and right edges, respectively.'
+      description: 'Create inputs and ouputs by clicking on the left and right edges, respectively.'
     },
     {
       name: 'Rule 2',
-      description: 'Toggle between HIGH and LOW inputs by clicking on them.'
+      description: 'Toggle between HIGH and LOW inputs by clicking on the inputs respetively.'
     },
     {
       name: 'Rule 3',
-      description: 'You can remove the inputs or outputs by holding "Ctrl" and clicking them and the other elements by "Ctrl" + "Shift and clicking them.'
+      description: 'Remove the inputs/outputs by holding "Ctrl" and clicking them and the other elements by "Ctrl" + "Shift" and clicking them.'
     },
     {
       name: 'Rule 4',
-      description: "You can drag and drop the chips from the bottom bar that works as selector."
+      description: "Drag and drop the chips from the bottom bar that works as selector."
     },
     {
       name: 'Rule 5',
-      description: 'You can create custom chips that stores the logic you create.'
-    },
-    {
-      name: 'Rule 6',
-      description: 'Get crazy!!'
+      description: 'Create custom chips by creating a circuit and saving it.'
     }
   ]
 
