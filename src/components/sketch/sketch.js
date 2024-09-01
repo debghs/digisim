@@ -158,14 +158,14 @@ export default function Sketch(props) {
         for (let i = 0; i < this.inputs; i++) {
           const x = this.x - this.w / 2;
           const y = this.inputs === 1 ? this.y : p.map(i, 0, this.inputs - 1, this.y - this.h / 2 + 9, this.y + this.h / 2 - 9);
-          this.inputPins.push(new Pin(x, y, this));
+          this.inputPins.push(new Pin(x, y, this,'input'));
         }
         
         this.outputPins = [];
         for (let i = 0; i < this.outputs; i++) {
           const x = this.x + this.w / 2;
           const y = this.outputs === 1 ? this.y : p.map(i, 0, this.outputs - 1, this.y - this.h / 2 + 12, this.y + this.h / 2 - 9);
-          this.outputPins.push(new Pin(x, y, this));
+          this.outputPins.push(new Pin(x, y, this,'output'));
         }
       }
       
@@ -242,13 +242,14 @@ export default function Sketch(props) {
     
 
     class Pin {
-      constructor(x, y, parent) {
+      constructor(x, y, parent, type) {
         this.x = x;
         this.y = y;
         this.r = 8;
         this.state = false;
         this.wires = [];
         this.parent = parent;
+        this.type = type;
         pins.push(this);
       }
       
@@ -265,7 +266,14 @@ export default function Sketch(props) {
       
       render() {
         p.noStroke();
-        p.fill(0, 0, 0);
+        if(this.type === 'input')
+        {
+          p.fill(0,0,255);
+        }
+        else
+        {
+          p.fill(0,255,0);
+        }
         p.circle(this.x, this.y, this.r*2);
       }
     }
@@ -276,7 +284,12 @@ export default function Sketch(props) {
         this.nodeX = inp ? 40 : p.width-40;
         this.nodeY = pinY;
         this.nodeR = 15;
-        this.pin   = new Pin(inp ? 80 : p.width-80, pinY, this);
+        this.pin   = new Pin(
+          inp ? 80 : p.width-80,
+          pinY, 
+          this, 
+          inp ? 'output' : 'input'
+        );
         this.name  = name;
         this.state = false; // If I change this to sth else it just brakes cause concept instance of the circuit; return false always (chipClass)
       }
@@ -368,9 +381,12 @@ export default function Sketch(props) {
               || inputs.length === 0 
               || outputs.length === 0
               || check.indexOf(chipNameCap) !== -1
-            ) {
+            ) 
+        {
           alert("Please insert a valid component")
-        } else {
+        } 
+        else 
+        {
           chipNameInput.value(''); // Resets input value
           const col = p.color(p.random(360), 100, 80);
           circuits[chipName] = new Circuit(chipName, col, inputs.slice(), outputs.slice(), wires.slice(), chips.slice());
@@ -387,7 +403,8 @@ export default function Sketch(props) {
         }
       });
 
-      for (const name in concepts) {
+      for (const name in concepts)
+      {
       
         const c = concepts[name];
         c.col = p.color(p.random(360), 100, 80);
@@ -480,35 +497,54 @@ export default function Sketch(props) {
         }
       }
     
-      if (p.mouseY >= 80 && p.mouseY <= p.height-80) {
-        if (p.mouseX >= 34 && p.mouseX <= 46) { // Input area
+      if (p.mouseY >= 80 && p.mouseY <= p.height-80) 
+      {
+        if (p.mouseX >= 34 && p.mouseX <= 46) 
+        { // Input area
           inputs.push(new InOut(true, p.mouseY));
-        } else if (p.mouseX >= p.width-46 && p.mouseX <= p.width-34) { // Output area
+        } else if (p.mouseX >= p.width-46 && p.mouseX <= p.width-34) 
+        { // Output area
           outputs.push(new InOut(false, p.mouseY));
         }
       }
     }
 
     p.mouseDragged = () => {
-      for (const button of buttons) {
+      for (const button of buttons) 
+      {
         if (button.currentChip) button.move();
       }
     }
     p.mouseReleased = () => {
-      for (const button of buttons) {
+      for (const button of buttons) 
+      {
         if (button.currentChip) button.release();
       }
-      if (wiringMode) {
-        for (const pin of pins) {
-          if (pin.contains(p.mouseX, p.mouseY) && pin !== wireA) {
-            wiringMode = false;
-            const wire = new Wire(wireA, pin, waypoints.slice());
-            wires.push(wire);
-            wireA.wires.push(wire);
-            pin.wires.push(wire);
-            wire.a.propagate();
-            waypoints.splice(0);
-            return;
+      if (wiringMode)
+      {
+        for (const pin of pins) 
+        {
+          if (pin.contains(p.mouseX, p.mouseY) && pin !== wireA) 
+          {
+            // Direction Check: Only allow output to input
+            if(wireA.type === 'output' && pin.type === 'input')
+            {  
+              wiringMode = false;
+              const wire = new Wire(wireA, pin, waypoints.slice());
+              wires.push(wire);
+              wireA.wires.push(wire);
+              pin.wires.push(wire);
+              wire.a.propagate();
+              waypoints.splice(0);
+              return;
+            }
+             else if(wireA.type === 'input' && pin.type === 'output') 
+            {
+              // Invalid connection: optionally notify the user
+              alert('Invalid wire connection: Must connect output to input.');
+              wiringMode = false;
+              return;
+            }
           }
         }
         wiringMode = false;
@@ -526,10 +562,12 @@ export default function Sketch(props) {
       p.fill('#323232');
       p.rect(40, 80, p.width-80, p.height-160); //AQUI!!!!!!
     
-      for (const wire of wires) {
+      for (const wire of wires) 
+      {
         wire.render();
       }
-      if (wiringMode) {
+      if (wiringMode) 
+      {
         p.stroke('#20252E');
         p.strokeWeight(6);
         p.noFill();
@@ -542,18 +580,22 @@ export default function Sketch(props) {
         p.endShape();
       }
       
-      for (const inp of inputs) {
+      for (const inp of inputs)
+      {
         inp.render();
       }
-      for (const out of outputs) {
+      for (const out of outputs)
+      {
         out.render();
       }
-      for (const chip of chips) {
+      for (const chip of chips)
+      {
         chip.render();
       }
       
       create.render();
-      for (const button of buttons) {
+      for (const button of buttons)
+      {
         button.render();
       }
     }
