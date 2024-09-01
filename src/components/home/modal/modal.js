@@ -21,7 +21,7 @@ function Modal (props) {
     },
     {
       name: 'Rule 3',
-      description: 'Set the input and output pins before first.'
+      description: 'Set the input and output pins first.'
     },
     {
       name: 'Rule 4',
