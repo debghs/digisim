@@ -21,14 +21,18 @@ function Modal (props) {
     },
     {
       name: 'Rule 3',
-      description: 'Remove the inputs/outputs by holding "Ctrl" and clicking them and the other elements by "Ctrl" + "Shift" and clicking them.'
+      description: 'Set the input and output pins before first.'
     },
     {
       name: 'Rule 4',
-      description: "Drag and drop the chips from the bottom bar that works as selector."
+      description: 'Remove the inputs/outputs by holding "Ctrl" and clicking them and the other elements by "Ctrl" + "Shift" and clicking them.'
     },
     {
       name: 'Rule 5',
+      description: "Drag and drop the chips from the bottom bar that works as selector."
+    },
+    {
+      name: 'Rule 6',
       description: 'Create custom chips by creating a circuit and saving it.'
     }
   ]
