@@ -560,7 +560,7 @@ export default function Sketch(props) {
       p.stroke(0, 0, 50);
       p.strokeWeight(1);
       p.fill('#323232');
-      p.rect(40, 80, p.width-80, p.height-160); //AQUI!!!!!!
+      p.rect(40, 80, p.width-80, p.height-160); 
     
       for (const wire of wires) 
       {

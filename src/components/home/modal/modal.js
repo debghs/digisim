@@ -13,7 +13,7 @@ function Modal (props) {
   const rules = [
     {
       name: 'Rule 1',
-      description: 'Create inputs and ouputs by clicking on the left and right edges, respectively.'
+      description: 'Create inputs and ouputs by clicking on the left and right edges of the canvas, respectively.'
     },
     {
       name: 'Rule 2',
@@ -25,7 +25,7 @@ function Modal (props) {
     },
     {
       name: 'Rule 4',
-      description: 'Remove the inputs/outputs by holding "Ctrl" and clicking them and the other elements by "Ctrl" + "Shift" and clicking them.'
+      description: 'Remove the inputs/outputs by holding "Ctrl" and clicking on them and the other elements by "Ctrl" + "Shift" and clicking on them.'
     },
     {
       name: 'Rule 5',
